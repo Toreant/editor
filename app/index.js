@@ -5,7 +5,8 @@
 var $ = require('./jquery.min');
 var ipc = require("electron").ipcRenderer;
 var $code = $("#code"),
-    $aside = $(".mAside");
+    $aside = $(".mAside"),
+    $line = $('.line');
 
 var TYPE = {
     1 : "标识符",
@@ -17,13 +18,14 @@ var TYPE = {
     7 : "数字",
     9 : "特殊符号",
     10 : "换行",
-    11 : "结束标志"
+    11 : "结束标志",
+    12 : "不符合规则的表达"
 };
 
 var scanBtn = document.getElementById('scan');
 
 scanBtn.addEventListener('click',function(e) {
-    var code = $code.text();
+    var code = $code.val();
 
     ipc.send('edit-scan',code);
 });
@@ -34,20 +36,18 @@ scanBtn.addEventListener('mouseover',function(e) {
 
 $code.on('input',function(e) {
     var input = $(this).val().split(/\n/);
-    $('.line').css('transform','translateY(-'+$(this).scrollTop()+'px)');
-    $(".line").empty();
+    $line.css('transform','translateY(-'+$(this).scrollTop()+'px)');
+    $line.empty();
     for(var i = 0, num = input.length; i < num; i++) {
-        var $line = $('.line');
-            var lineNum = $line.children('span').length;
-            var newNum = '<span class="line-num">' + (i+1) +'</span>';
-            $(".line").append(newNum);
+        var lineNum = $line.children('span').length;
+        var newNum = '<span class="line-num">' + (i+1) +'</span>';
+        $line.append(newNum);
     }
 });
 
 ipc.on('code-receive',function(event,args) {
     $(".token-list").empty().append(show(args));
     $aside.animate({'right': '0'},400);
-    console.log(args);
 });
 
 $(".backBtn").click(function() {
@@ -55,13 +55,13 @@ $(".backBtn").click(function() {
 });
 
 $code.on('scroll',function(e) {
-    $('.line').css('transform','translateY(-'+$(this).scrollTop()+'px)');
+    $line.css('transform','translateY(-'+$(this).scrollTop()+'px)');
 });
 
 function show(args) {
     var html = '';
     for(var i = 0, num = args.length; i < num; i++) {
-        if(/\s/.test(args[i].token)) {
+        if(args[i].type == 6 || args[i].type == 10 || args[i].type == 11) {
             continue;
         }
         html += '<li>' + args[i].token

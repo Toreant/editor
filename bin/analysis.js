@@ -28,6 +28,8 @@ function Analysis() {
     this.state = STATE.NORMAL;
     this.renderStr = "";
     this.transferredMean = false;
+    this.annotated = false;
+    this.annotateType = -1;
     this.str = [];
 
     this.createToken = function(createTokenType) {
@@ -54,6 +56,9 @@ function Analysis() {
                     this.state = STATE.STRING;
                 } else if(tokenParser.isSignChar(c)) {
                     this.state = STATE.SIGN;
+                    if(c == '/') {
+                        this.annotated = true;
+                    }
                 } else if(!isNaN(c) && !/\s/.test(c)) {
                     this.state = STATE.NUMBER;
                 } else if(isInclude(SPACE,c)) {
@@ -62,6 +67,9 @@ function Analysis() {
                     createTokenType = STATE.NEWLINE;
                 } else if(c == '\0') {
                     createTokenType = STATE.END;
+                }　else {
+                    // 不符合规定的字符
+                    this.state = STATE.NOT_ASSIGNMENT;
                 }
 
                 this.renderStr += c;
@@ -73,6 +81,8 @@ function Analysis() {
                 } else {
                     this.state = STATE.NORMAL;
                     if(_.indexOf(KEYWORD,this.renderStr) != -1) {
+
+                        // 是否是关键字
                         createTokenType = STATE.KEYWORDS;
                     } else {
                         createTokenType = STATE.IDENTIFIER;
@@ -88,7 +98,8 @@ function Analysis() {
                     if(!tmp) {
                         throw new Error('error transform char');
                     }
-                    this.renderStr += tmp;
+
+                    this.renderStr += '\\' + c;
                     this.transferredMean = false;
                 } else if(c == '\\') {
                     this.transferredMean = true;
@@ -102,12 +113,27 @@ function Analysis() {
                 break;
 
             case STATE.ANNOTATION:
-                if(c != '\n' || c != '\0') {
-                    this.renderStr += c;
-                } else {
+                var isBreak = false;　// 注释结束判断
+                switch (this.annotateType) {
+                    case 0:
+                        if(c == '\n' || c == '\0') {
+                            isBreak = true;
+                        } else {
+                            this.renderStr += c;
+                        }
+                        break;
+                    case 1:
+                        var lastChar = this.renderStr[this.renderStr.length - 1];
+                        if((lastChar == '*' && c == '/') || c == undefined) {
+                            isBreak = true;
+                        }
+                        this.renderStr += c;
+                        break;
+                }
+                 if(isBreak) {
+                    this.annotated = false;
                     this.state = STATE.NORMAL;
                     createTokenType = STATE.ANNOTATION;
-                    moveCursor = false;
                 }
                 break;
 
@@ -115,19 +141,37 @@ function Analysis() {
                 break;
 
             case STATE.SIGN:
-                if(tokenParser.isSignChar(c)) {
+                if(this.annotated) {
+                    // 如果'/'符号后面不是紧跟注释的符号
+                    // 那么'/'就不是注释的开始
+                    // 应该返回到标点符号的状态
+                    var again = false;
+                    if(c == '/') {
+                        this.annotateType = 0; // 行注释
+                        again = true;
+                    } else if(c == '*') {
+                        this.annotateType = 1;　// 块注释
+                        again = true;
+                    } else {
+                        this.annotated = false;
+                    }
+                    if(again) {
+                        this.renderStr += c;
+                        this.state = STATE.ANNOTATION;
+                    } else {
+                        moveCursor = false;
+                    }
+                } else if(tokenParser.isSignChar(c)) {
                     this.renderStr += c;
                 } else {
+
+                    // 解析标点符号的组成
+                    // 以最长匹配原则
                     var list = tokenParser.getSignByStr(this.renderStr);
-                    var _index = _.indexOf(list,'//');
-                    if(_index == -1) {
-                        this.createTokenByList(STATE.SIGN,list);
-                        this.renderStr = '';
-                        this.state = STATE.NORMAL;
-                        moveCursor = false;
-                    } else {
-                        this.state = STATE.ANNOTATION;
-                    }
+                    this.createTokenByList(STATE.SIGN,list);
+                    this.renderStr = '';
+                    this.state = STATE.NORMAL;
+                    moveCursor = false;
                 }
                 break;
 
@@ -151,14 +195,13 @@ function Analysis() {
                 }
                 break;
 
-            case STATE.SPECIAL:
-                if(c == '//') {
-                    console.log('dsd');
-                    this.state = STATE.ANNOTATION;
-                } else if(c == '*') {
-                    this.state = STATE.ANNOTATION;
-                } else {
+            case STATE.NOT_ASSIGNMENT:
+                if(/\s/.test(c) || c == undefined) {
                     this.state = STATE.NORMAL;
+                    createTokenType = STATE.NOT_ASSIGNMENT;
+                    moveCursor = false;
+                } else {
+                    this.renderStr += c;
                 }
                 break;
 

@@ -14,7 +14,8 @@ module.exports = function() {
             "NUMBER" : 7,
             "SPECIAL" : 9,
             "NEWLINE" : 10,
-            "END" : 11
+            "END" : 11,
+            "NOT_ASSIGNMENT" : 12
         },
         SPECIAL_CHARS : [
             '#','!','<','>','/','[',']','{','}','\\','|','?','&','^','%','*',

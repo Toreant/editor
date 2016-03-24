@@ -8,7 +8,6 @@ var Analysis = require('./analysis');
 
 ipc.on('edit-scan',function(event,args) {
 
-    console.log(args);
     var app = new Analysis();
 
     event.sender.send('code-receive',app.render(args));
