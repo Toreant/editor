@@ -58,17 +58,55 @@ $code.on('scroll',function(e) {
     $line.css('transform','translateY(-'+$(this).scrollTop()+'px)');
 });
 
+$(".token-list").on('mouseover','li',function(e) {
+    throttle(over,{
+        text : $(this).children('.token').text(),
+        type : $(this).children('.badge').text(),
+        e : e
+    });
+});
+
+$(".token-list").on('mouseout','li',function(e) {
+    clearTimeout(over.id);
+    $(".detail-block").css({
+        "display" : 'none'
+    });
+});
+
 function show(args) {
     var html = '';
     for(var i = 0, num = args.length; i < num; i++) {
         if(args[i].type == 6 || args[i].type == 10 || args[i].type == 11) {
             continue;
         }
-        html += '<li>' + args[i].token
-                    + '<span class="badge">'
+        html += '<li><span class="token">' + args[i].token
+                    + '</span><span class="badge">'
                     +TYPE[args[i].type]
                     +'</span>'
                 +'</li>';
     }
     return html;
+}
+
+function throttle(method,context) {
+    clearTimeout(method.id);
+    method.id = setTimeout(function(){
+        method.call(context);
+    },500);
+}
+
+function over() {
+    var e = this.e;
+    var offsetBottom = $(window).innerHeight() - e.clientY;
+    var top = e.clientY;
+    var content = '<div>'+ this.text+'</div><span>' + this.type + '</span>';
+
+    if(offsetBottom < 100) {
+        top = top- 100;
+    }
+    $(".detail-block").css({
+        "display" : "flex",
+        "left" : '30px',
+        "top" : top + 'px'
+    }).empty().append(content);
 }
