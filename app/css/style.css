@@ -1,0 +1,332 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  margin: 0;
+  background-color: #0b97c4;
+  -webkit-app-region: drag;
+}
+.main {
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 0;
+  position: relative;
+}
+.top {
+  width: 100%;
+  height: 30px;
+  /*top: 0;*/
+  /*left: 0;*/
+  background-color: #0a0a0a;
+  z-index: 5000;
+}
+.top .banner {
+  line-height: 30px;
+  font-size: 30px;
+  margin-left: 10px;
+  color: #fff;
+}
+.top .banner:hover {
+  color: #999;
+  cursor: pointer;
+}
+.tip {
+  background-color: #b94a48;
+  color: #fff;
+  font-size: 14px;
+  line-height: 25px;
+  height: 25px;
+  border-radius: 4px;
+  margin-left: 10px;
+  display: inline-block;
+  padding: 3px;
+}
+.tip .caret {
+  font-size: 16px;
+  margin-left: -8px;
+  color: #b94a48;
+}
+.container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  flex: 1;
+  align-self: flex-end;
+  background-color: #444444;
+  -webkit-app-region: no-drag;
+  z-index: 0;
+  overflow: hidden;
+}
+.code {
+  padding: 5px;
+  margin: 0;
+  background-color: #444444;
+  color: #fff;
+  overflow: auto;
+  line-height: 22px;
+  font-size: 16px;
+  flex-grow: 1;
+}
+.etc {
+  flex-grow: 0;
+  width: 70px;
+  background-color: #888888;
+}
+.line {
+  margin: 5px;
+  position: relative;
+  width: 70px;
+  float: left;
+  font-size: 18px;
+  overflow: hidden;
+}
+.line-num {
+  display: block;
+  width: 100%;
+  height: 22px;
+  line-height: 22px;
+  color: #fff;
+}
+.mAside {
+  background-color: rgba(10, 10, 10, 0.7);
+  position: fixed;
+  right: -100%;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  -webkit-app-region: no-drag;
+  z-index: 6000;
+}
+.backBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 20px;
+  color: #fff;
+  margin-top: 10px;
+  z-index: 5000;
+}
+.backBtn:hover {
+  color: #cc0000;
+  cursor: pointer;
+}
+.token-list {
+  list-style: none;
+  color: #fff;
+  width: 100%;
+  padding: 0;
+  overflow-y: scroll;
+  height: 100%;
+}
+.token-list > li {
+  display: -webkit-flex;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 3px;
+  white-space: nowrap;
+  padding: 0;
+}
+.token-list > li:hover {
+  background-color: #888888;
+  cursor: pointer;
+}
+.token {
+  line-height: 30px;
+  height: 30px;
+  display: inline-block;
+  position: relative;
+  flex: 1;
+  padding: 5px;
+  overflow: hidden;
+}
+.badge {
+  display: inline-block;
+  background-color: #8A6343;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 3px;
+  line-height: 20px;
+  height: 20px;
+  align-self: center;
+}
+.detail-block {
+  position: absolute;
+  display: none;
+  border: 1px solid #999;
+  box-shadow: 0 0 10px #ddd;
+  background-color: #fff;
+  z-index: 5000;
+  width: 200px;
+  height: 100px;
+  font-size: 16px;
+  flex-direction: column;
+}
+.detail-block div {
+  flex: 1;
+  width: 90%;
+  padding: 10px;
+  border-bottom: 1px solid #999;
+}
+.detail-block span {
+  line-height: 16px;
+  height: 16px;
+  display: block;
+  background-color: #0b97c4;
+  color: #fff;
+}
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+/* 这是针对缺省样式 (必须的) */
+::-webkit-scrollbar-track {
+  background-color: #f0f0f0;
+}
+/* 滚动条的滑轨背景颜色 */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+/* 滑块颜色 */
+::-webkit-scrollbar-button {
+  background-color: #888888;
+}
+/* 滑轨两头的监听按钮颜色 */
+::-webkit-scrollbar-corner {
+  background-color: black;
+}
+/* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+.animated {
+  animation-fill-mode: both;
+  animation-duration: 1s;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.fadeOut {
+  animation-name: fadeOut;
+}
+.nav-brand {
+  display: inline-block;
+  font-size: 20px;
+  overflow: hidden;
+  width: 35px;
+  height: 35px;
+}
+.nav-brand:hover {
+  cursor: pointer;
+}
+.triangles {
+  height: 27px;
+  width: 30px;
+  transform: translate(-50%, -50%);
+  position: relative;
+  overflow: hidden;
+}
+.navbar-brand:hover .tri {
+  animation-play-state: paused;
+}
+.tri {
+  position: absolute;
+  animation: pulse 750ms ease-in infinite;
+  border-top: 9px solid #999;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 0;
+}
+.tri.invert {
+  border-top: 0;
+  border-bottom: 9px solid #999;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+.tri:nth-child(1) {
+  left: 10px;
+  color: #fff;
+}
+.tri:nth-child(2) {
+  left: 5px;
+  top: 9px;
+  animation-delay: -125ms;
+}
+.tri:nth-child(3) {
+  left: 10px;
+  top: 9px;
+}
+.tri:nth-child(4) {
+  left: 15px;
+  top: 9px;
+  animation-delay: -625ms;
+}
+.tri:nth-child(5) {
+  top: 18px;
+  animation-delay: -250ms;
+}
+.tri:nth-child(6) {
+  top: 18px;
+  left: 5px;
+  animation-delay: -250ms;
+}
+.tri:nth-child(7) {
+  top: 18px;
+  left: 10px;
+  animation-delay: -375ms;
+}
+.tri:nth-child(8) {
+  top: 18px;
+  left: 15px;
+  animation-delay: -500ms;
+}
+.tri:nth-child(9) {
+  top: 18px;
+  left: 20px;
+  animation-delay: -500ms;
+}
+.first-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3000;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+}
+.step {
+  position: relative;
+}
+.step:nth-child(1) {
+  top: 50px;
+  left: 20px;
+}
+.step:nth-child(2) {
+  display: none;
+}
+.step > span {
+  font-size: 100px;
+  color: #fff;
+}
+.close {
+  position: relative;
+  left: 50%;
+  top: 40%;
+  display: none;
+}
+.close:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+.close > span {
+  font-size: 80px;
+  color: #00d4b4;
+}

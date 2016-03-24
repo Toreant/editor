@@ -6,7 +6,10 @@ var $ = require('./jquery.min');
 var ipc = require("electron").ipcRenderer;
 var $code = $("#code"),
     $aside = $(".mAside"),
-    $line = $('.line');
+    $line = $('.line'),
+    $tokenList = $('.token-list');
+
+var first = true;
 
 var TYPE = {
     1 : "标识符",
@@ -25,9 +28,25 @@ var TYPE = {
 var scanBtn = document.getElementById('scan');
 
 scanBtn.addEventListener('click',function(e) {
-    var code = $code.val();
+    if(first) {
+        $(".step").eq(0).remove();
+        $(".step").eq(1).css({
+            "display" : "block"
+        });
+        $(".close").css({
+            "display" : 'block'
+        });
+        $(this).css({
+            "z-index" : "0"
+        });
+        $aside.animate({'right': '0'},400);
+        first = false;
+    } else {
+        $(".triangles").addClass('fadeOut');
+        var code = $code.val();
 
-    ipc.send('edit-scan',code);
+        ipc.send('edit-scan',code);
+    }
 });
 
 scanBtn.addEventListener('mouseover',function(e) {
@@ -58,7 +77,7 @@ $code.on('scroll',function(e) {
     $line.css('transform','translateY(-'+$(this).scrollTop()+'px)');
 });
 
-$(".token-list").on('mouseover','li',function(e) {
+$tokenList.on('mouseover','li',function(e) {
     throttle(over,{
         text : $(this).children('.token').text(),
         type : $(this).children('.badge').text(),
@@ -66,11 +85,15 @@ $(".token-list").on('mouseover','li',function(e) {
     });
 });
 
-$(".token-list").on('mouseout','li',function(e) {
+$tokenList.on('mouseout','li',function(e) {
     clearTimeout(over.id);
     $(".detail-block").css({
         "display" : 'none'
     });
+});
+
+$(".close").click(function() {
+    $(".first-tip").remove();
 });
 
 function show(args) {
