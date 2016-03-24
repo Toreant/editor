@@ -30,6 +30,7 @@ function Analysis() {
     this.transferredMean = false;
     this.annotated = false;
     this.annotateType = -1;
+    this.decimaled = false;
     this.str = [];
 
     this.createToken = function(createTokenType) {
@@ -186,9 +187,15 @@ function Analysis() {
                 break;
 
             case STATE.NUMBER:
-                if(!isNaN(c) && !/\s/.test(c)) {
+                if((!isNaN(c) && !/\s/.test(c))) {
                     this.renderStr += c;
+                } else if(!this.decimaled && c == '.'){
+                    this.renderStr += c;
+                    this.decimaled = true;
+                } else if(this.decimaled && c == '.') {
+                    throw new Error('error decimal point')
                 } else {
+                    this.decimaled = false;
                     createTokenType = STATE.NUMBER;
                     this.state = STATE.NORMAL;
                     moveCursor = false;
