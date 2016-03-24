@@ -1,0 +1,176 @@
+html,
+body {
+    width: 800px;
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+    background-color: #0b97c4;
+    -webkit-app-region: drag;
+}
+
+.top {
+    width: 100%;
+    height: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(10,10,10,0.5);
+}
+
+.top .banner {
+    line-height: 30px;
+    font-size: 20px;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.banner:hover{
+    color: #999;
+    cursor: pointer;
+}
+
+.tip {
+    background-color: #b94a48;
+    color: #fff;
+    font-size: 14px;
+    line-height: 25px;
+    height: 25px;
+    border-radius: 4px;
+    margin-left: 10px;
+    display: inline-block;
+    padding: 3px;
+}
+
+.tip .caret {
+    font-size: 16px;
+    margin-left: -8px;
+    color: #b94a48;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 570px;
+    display: flex;
+    /*overflow-y: scroll;*/
+    background-color: #444444;
+    margin-top: 30px;
+    -webkit-app-region: no-drag;
+}
+
+.code {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-block;
+    width: 750px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 0;
+    background-color: #444444;
+    color: #fff;
+    height: 100%;
+    overflow-y: scroll;
+    line-height: 22px;
+    font-size: 16px;
+}
+
+.etc {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    min-height: 570px;
+    background-color: #888888;
+}
+
+.line {
+    position: relative;
+    width: 50px;
+    float: left;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.line-num {
+    display: block;
+    width: 100%;
+    height: 22px;
+    line-height: 22px;
+    color: #fff;
+}
+
+.mAside {
+    background-color: rgba(10,10,10,0.7);
+    position: fixed;
+    right: -100%;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    -webkit-app-region: no-drag;
+}
+
+.backBtn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.token-list {
+    list-style: none;
+    color: #fff;
+    width: 100%;
+    padding: 0;
+    overflow-y: scroll;
+    height: 580px;
+}
+
+.token-list>li {
+    padding-left: 5px;
+    display: block;
+    line-height: 30px;
+    height: 30px;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.token-list>li:hover {
+    background-color: #888888;
+    cursor: pointer;
+}
+
+.badge {
+    float: right;
+    display: inline-block;
+    background-color: #8A6343;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-right: 10px;
+    padding: 3px;
+    line-height: 20px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+} /* 这是针对缺省样式 (必须的) */
+
+::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+} /* 滚动条的滑轨背景颜色 */
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+} /* 滑块颜色 */
+
+::-webkit-scrollbar-button {
+    background-color: #888888;
+} /* 滑轨两头的监听按钮颜色 */
+
+::-webkit-scrollbar-corner {
+    background-color: black;
+} /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
